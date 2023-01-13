@@ -1,6 +1,6 @@
 
-ARG CUDA=11.1
-FROM nvidia/cuda:${CUDA}-cudnn8-devel-ubuntu20.04
+ARG CUDA=11.3.1
+FROM nvidia/cuda:${CUDA}-cudnn8-runtime-ubuntu18.04
 # FROM directive resets ARGS, so we specify again (the value is retained if
 # previously set).
 ARG CUDA
@@ -9,7 +9,7 @@ ARG CUDA
 SHELL ["/bin/bash", "-c"]
 
 # Fetch the missing keys
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
+RUN APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 A4B469963BF863CC
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
       build-essential \
