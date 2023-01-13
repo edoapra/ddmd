@@ -23,14 +23,14 @@ pip install .
 Docker images are available and can be built with the following command. 
 ```
 docker build -f envs/Dockerfile -t ddmd . 
-docker run -it ddmd bash
+docker run --gpus all -it --rm ddmd bash
 ```
 
 ### Singularity 
 Singularity image can be built with `envs/ddmd.def`. 
 ```
 cd envs
-sudo singularity build ddmd.sif ddmd.def
+singularity build -f /tmp/ddmd.sif ddmd.def
 ```
 Note: It would be necessary to specify the `singularity` path if it's not in the root dir. 
 
