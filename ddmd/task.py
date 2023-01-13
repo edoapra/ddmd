@@ -79,6 +79,10 @@ class Run:
             preexec_fn=os.setsid
         )
 
+        logger.info(f"Popen: before wait")
+        self.process.wait()
+        logger.info(f"Popen: after wait")
+
     def poll(self):
         retcode = self.process.poll()
         if retcode is not None:

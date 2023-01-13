@@ -69,6 +69,7 @@ class ddmd_run(object):
         elif len(self.gpu_ids) < n_runs:
             n_gpus = len(self.gpu_ids)
             self.n_sims = self.n_sims + n_gpus - n_runs
+            self.n_sims = max(self.n_sims, 1)
             logger.info("Not enough GPUs avaible for all the runs, and "\
                 f"reduce number of MD runs to {self.n_sims}")
             logger.info(f"New configuration: {self.n_sims} simulations, ")
@@ -85,7 +86,7 @@ class ddmd_run(object):
             if input in md_setup and md_setup[input]: 
                 if not os.path.isabs(md_setup[input]): 
                     md_setup[input] = os.path.join(self.yml_dir, md_setup[input])
-                    logger.debug(f"updated entry{input} to {md_setup[input]}.")
+                    logger.info(f"updated entry{input} to {md_setup[input]}.")
         self.md_path = create_path(dir_type='md', time_stamp=False)
         md_yml = f"{self.md_path}/md.yml"
         dict_to_yaml(md_setup, md_yml)
@@ -141,18 +142,21 @@ class ddmd_run(object):
         runs = []
         # md
         for i in range(self.n_sims): 
+            logger.info(f"md run number {i} out of {self.n_sims}")
             md_run = self.submit_job(md_yml, self.md_path, n_gpus=1, 
                     job_type='md', type_ind=i)
             runs.append(md_run)
             # avoid racing during dir creation
-            # time.sleep(1)
+            time.sleep(1)
         if self.md_only: 
             return runs
         # ml 
+        logger.info(f"ml run")
         ml_run = self.submit_job(ml_yml, self.ml_path, n_gpus=1, 
                 job_type='ml')
         runs.append(ml_run)
         # infer
+        logger.info(f"infer run")
         infer_run = self.submit_job(infer_yml, self.infer_path, 
                 n_gpus=1, job_type='infer')
         runs.append(infer_run)
