@@ -131,6 +131,7 @@ class ddmd_run(object):
             cmd_line=run_cmd,
             gpu_ids=gpu_ids,
             output_file=output_file,
+            wait=wait,
             cwd=work_path, # can be a different working directory
             envs_dict=None, # can be a dictionary of environ vars to add
         )
