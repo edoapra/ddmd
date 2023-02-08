@@ -47,7 +47,9 @@ jobs:
       run: |
         ls -l
         cd envs
-        apptainer build --fakeroot ddmd.sif  ddmd.def
+        df -h . /tmp
+        apptainer build --fakeroot /tmp/ddmd.sif  ddmd.def
+        ls -lrth /tmp/ddmd.sif
     - name: builddate
       id: build-date
       run: |
@@ -59,12 +61,12 @@ jobs:
         pwd
         ls -l
         apptainer remote list
-        apptainer push ddmd.sif ${{ env.tag }}:${{ env.date }}
-        apptainer push ddmd.sif ${{ env.tag }}:latest
+        apptainer push /tmp/ddmd.sif ${{ env.tag }}:${{ env.date }}
+        apptainer push /tmp/ddmd.sif ${{ env.tag }}:latest
     - name: test image with apptainer
       run: |
-        rm -f ddmd.sif || true
-        apptainer pull -F ddmd.sif ${{ env.tag }}:${{ env.date }}
+        rm -f /tmp/ddmd.sif || true
+        apptainer pull -F /tmp/ddmd.sif ${{ env.tag }}:${{ env.date }}
         apptainer exec ${{ env.tag }}:${{ env.date }} ddmd run_ddmd  -h || true
         apptainer exec ${{ env.tag }}:${{ env.date }} ls -lrt /opt/conda/bin |tail || true
         apptainer cache list -v
