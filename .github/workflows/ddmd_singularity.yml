@@ -46,7 +46,8 @@ jobs:
     - name: build an apptainer container
       run: |
         ls -l
-        apptainer build --fakeroot ddmd.sif  envs/ddmd.def
+        cd envs
+        apptainer build --fakeroot ddmd.sif  ddmd.def
     - name: builddate
       id: build-date
       run: |
@@ -54,6 +55,7 @@ jobs:
     - name: push to ghcr.io
       run: |
         echo ${{ secrets.GITHUB_TOKEN }} | apptainer remote login -u ${{ github.actor }} --password-stdin oras://ghcr.io
+        cd envs
         pwd
         ls -l
         apptainer remote list
