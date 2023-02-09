@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -t 2:49:00
+#SBATCH -t 12:49:00
 #SBATCH -N 1
 #SBATCH -A emsla60288
 #SBATCH -p analysis 
@@ -9,7 +9,6 @@
 source /etc/profile.d/modules.sh
 module purge
 module load gcc
-#export DDMD_HOME=/tahoma/emsla60288/edo/ddmd-tahoma-changes
 export DDMD_HOME=/big_scratch/ddmd
 export https_proxy=http://proxy.emsl.pnl.gov:3128
 export http_proxy=http://proxy.emsl.pnl.gov:3128
@@ -17,7 +16,6 @@ export INPUT=mytest.yml
 export ORGDIR=`pwd`
 export OUTDIR=`pwd`/out.$SLURM_JOBID
 mkdir -p $OUTDIR
-export LD_LIBRARY_PATH=/tahoma/emsla60288/edo/cuda-11.3/lib64:$LD_LIBRARY_PATH
 cd /big_scratch
 wget -q  https://github.com/edoapra/ddmd/tarball/tahoma-changes -O - | tar -xz
 mv *-ddmd-* ddmd
