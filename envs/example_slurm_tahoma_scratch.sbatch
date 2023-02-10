@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -t 12:49:00
+#SBATCH -t 47:49:00
 #SBATCH -N 1
 #SBATCH -A emsla60288
 #SBATCH -p analysis 
@@ -26,7 +26,15 @@ cp $ORGDIR/mytest.yml examples/input.yml
 singularity exec --nv  \
 --bind /big_scratch:/big_scratch \
 --bind $DDMD_HOME:/mnt \
-oras://ghcr.io/edoapra/ddmd/ddmd:latest ddmd run_ddmd -c examples/input.yml
+oras://ghcr.io/edoapra/ddmd/ddmd:latest ddmd run_ddmd -c examples/input.yml &
+pid=$!
+echo pid is $pid
+while :
+do
+    if [ `ps -ef | grep "$oldpid" | grep -v "grep" | wc -l` == 0 ]; then  break; fi
+    sleep 5m
+    rsync -aq  test  $OUTDIR/.
+done
 ls -lart
 rsync -av  test  $OUTDIR/.
 
