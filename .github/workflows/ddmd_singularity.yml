@@ -66,7 +66,6 @@ jobs:
     - name: test image with apptainer
       run: |
         rm -f /tmp/ddmd.sif || true
-        apptainer cache clean -f || true
         apptainer pull  -F /tmp/ddmd.sif ${{ env.tag }}:${{ env.date }}
         apptainer exec ${{ env.tag }}:${{ env.date }} ddmd run_ddmd  -h || true
         apptainer exec ${{ env.tag }}:${{ env.date }} ls -lrt /opt/conda/bin |tail || true
