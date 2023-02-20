@@ -43,6 +43,8 @@ jobs:
         rm apptainer_${APP_VER}_amd64.deb
         which apptainer
         apptainer version
+        dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
+        df -h
     - name: build an apptainer container
       run: |
         ls -l
