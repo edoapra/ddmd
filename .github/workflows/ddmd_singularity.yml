@@ -73,8 +73,8 @@ jobs:
         apptainer push /mnt/ddmd.sif ${{ env.tag }}:latest
     - name: test image with apptainer
       run: |
-        rm -f /mnt/ddmd.sif || true
-        apptainer pull  -F /mnt/ddmd.sif ${{ env.tag }}:${{ env.date }}
+        rm -f /tmp/ddmd.sif || true
+        apptainer pull  -F /tmp/ddmd.sif ${{ env.tag }}:${{ env.date }}
         apptainer exec ${{ env.tag }}:${{ env.date }} ddmd run_ddmd  -h || true
         apptainer exec ${{ env.tag }}:${{ env.date }} ls -lrt /opt/conda/bin |tail || true
         apptainer cache list -v
