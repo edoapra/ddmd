@@ -17,25 +17,18 @@ From: nvidia/cuda:11.3.0-runtime-ubuntu20.04
     mkdir -p $TMPDIR
 
     MYPREFIX=/opt/conda
-#    MYPREFIX=/tmp/conda
     mkdir -p $MYPREFIX
     df -h /tmp /dev/shm $MYPREFIX
-#    MINICONDA3=Miniconda3-latest-Linux-x86_64.sh
-     MINICONDA3=Miniconda3-py38_23.1.0-1-Linux-x86_64.sh
+    MINICONDA3=Miniconda3-latest-Linux-x86_64.sh
+#     MINICONDA3=Miniconda3-py38_23.1.0-1-Linux-x86_64.sh
     wget -q -P /tmp  https://repo.anaconda.com/miniconda/$MINICONDA3
     bash /tmp/$MINICONDA3 -b -u -p $MYPREFIX
     rm -f /tmp/$MINICONDA3
-    ls -lrta /tmp
-    du -sk /tmp/*|sort -n
 
     export PATH="$MYPREFIX/bin:$PATH"
     conda update -qy conda
-    conda env update -n base -f /ddmd.yml || true
+    conda env update -q -n base -f /ddmd.yml || true
     df -h
-    df -h /tmp  /dev/shm 
-    ls -lrta /tmp
-    du -sk /tmp/*|sort -n
-#    exit 1
     pip install git+https://github.com/hengma1001/ddmd.git
 # cleanup    
     conda clean -y --force-pkgs-dirs
@@ -51,8 +44,6 @@ From: nvidia/cuda:11.3.0-runtime-ubuntu20.04
     apt-get clean -y
     dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
     df -h . /tmp
-    ls -lart /tmp
-    du -sk /tmp/*|sort -n
     unset DEBIAN_FRONTEND
 
 %environment
