@@ -57,7 +57,7 @@ jobs:
         cd envs
         df -h . /tmp /mnt
         ls -lrt ~/
-        sudo apptainer build --sandbox /tmpt/ddmd.sif  ddmd.def
+        sudo apptainer build --sandbox /tmp/ddmd.sif  ddmd.def
         sudo chown  $USER /tmp/ddmd.sif
         ls -lrth /tmp/ddmd.sif
     - name: builddate
