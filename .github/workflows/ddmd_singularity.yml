@@ -57,9 +57,9 @@ jobs:
         cd envs
         df -h . /tmp /mnt
         ls -lrt ~/
-        sudo apptainer build --sandbox /mnt/ddmd.sif  ddmd.def
-        sudo chown  $USER /mnt/ddmd.sif
-        ls -lrth /mnt/ddmd.sif
+        sudo apptainer build --sandbox /tmpt/ddmd.sif  ddmd.def
+        sudo chown  $USER /tmp/ddmd.sif
+        ls -lrth /tmp/ddmd.sif
     - name: builddate
       id: build-date
       run: |
@@ -71,8 +71,8 @@ jobs:
         pwd
         ls -l
         apptainer remote list
-        apptainer push /mnt/ddmd.sif ${{ env.tag }}:${{ env.date }}
-        apptainer push /mnt/ddmd.sif ${{ env.tag }}:latest
+        apptainer push /tmp/ddmd.sif ${{ env.tag }}:${{ env.date }}
+        apptainer push /tmp/ddmd.sif ${{ env.tag }}:latest
     - name: test image with apptainer
       run: |
         rm -f /tmp/ddmd.sif || true
