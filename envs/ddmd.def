@@ -12,8 +12,8 @@ From: nvidia/cuda:11.3.0-cudnn8-devel-ubuntu20.04
     apt-get -y update
     apt-get install -y build-essential  cmake  git  wget openmpi-bin openmpi-doc libopenmpi-dev slurm-client
 
-    wget -q -P /tmp https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda
+    wget -q -P /tmp https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+    bash /tmp/Miniforge3-Linux-x86_64.sh -b -p /opt/conda
 
     export PATH="/opt/conda/bin:$PATH"
     conda update -qy conda
