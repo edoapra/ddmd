@@ -56,7 +56,6 @@ class Run:
         cmd_line: str,
         # num_ranks: int,
         output_file,
-        wait,
         gpu_ids=None,
         cwd=None,
         envs_dict: Dict[str, str] = None,
@@ -79,11 +78,6 @@ class Run:
             stderr=subprocess.STDOUT,
             preexec_fn=os.setsid
         )
-
-        logger.info(f"Popen: before wait")
-        if wait:
-            self.process.wait()
-        logger.info(f"Popen: after wait")
 
     def poll(self):
         retcode = self.process.poll()
