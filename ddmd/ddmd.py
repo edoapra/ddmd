@@ -55,8 +55,8 @@ class ddmd_run(object):
             logger.info(f"Running only {self.n_sims} simulations...")
         else:
             n_runs = self.n_sims + 2
-        self.gpu_ids = GPUManager().request(num_gpus=n_runs)
-        logger.info(f"Available {len(self.gpu_ids)} GPUs: {self.gpu_ids}")
+#        self.gpu_ids = GPUManager().request(num_gpus=n_runs)
+#        logger.info(f"Available {len(self.gpu_ids)} GPUs: {self.gpu_ids}")
         # if not enough GPUs, reconf the workflow
         if len(self.gpu_ids) == 2: 
             logger.info("only two GPUs detected, going to be overlay" \
@@ -126,7 +126,16 @@ class ddmd_run(object):
         if type_ind >= 0: 
             output_file = f"{output_file}_{type_ind}"
         # get gpu ids for current job 
-        gpu_ids = [self.gpu_ids.pop(0) for _ in range(n_gpus)]
+        logger.info(f"submit_job: job_type={job_type}")
+        logger.info(f"submit_job: using {n_gpus} GPUs.")
+        self.gpu_ids = GPUManager().request(num_gpus=n_gpus)
+        logger.info(f"submit_job: gpu_ids {self.gpu_ids}")
+        gpu_ids = [self.gpu_ids.pop() for _ in range(n_gpus)]
+        if (job_type == 'md') and (n_gpus < 3):
+            wait=True
+        else:
+            wait=False
+        logger.info(f"submit_job: wait={wait}")
         run = Run(
             cmd_line=run_cmd,
             gpu_ids=gpu_ids,
