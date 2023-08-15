@@ -26,8 +26,12 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     rm -f /tmp/$MINIFORGE3
 
     export PATH="$MYPREFIX/bin:$PATH"
-    conda update -qy conda
-    conda env update -q -n base -f /ddmd.yml 
+    eval "$($MYPREFIX/bin/conda shell.dash hook)"
+      conda install -y -c conda-forge micromamba
+      eval "$(micromamba shell hook --shell dash)"
+      micromamba create -c conda-forge -y -n ddmd -f /ddmd.yml
+      micromamba update -c conda-forge -y -f /ddmd.yml
+      micromamba activate ddmd
     df -h
     pip install git+https://github.com/hengma1001/ddmd.git
 # cleanup    
@@ -47,5 +51,10 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     unset DEBIAN_FRONTEND
 
 %environment
-    PATH="/opt/conda/bin:$PATH"
+#    PATH="/opt/conda/bin:$PATH"
+    MYPREFIX=/opt/conda
+    eval "$($MYPREFIX/bin/conda shell.dash hook)"
+    eval "$(micromamba shell hook --shell dash)"
+    micromamba activate ddmd
+    
 
