@@ -54,8 +54,7 @@ rm -rf /usr/share/doc
     rm -rf $MYPREFIX/lib/python*/site-packages/tensorflow/include
     rm -rf $MAMBA_ROOT_PREFIX/envs/ddmd/lib/python*/site-packages/tensorflow/include
     strip --strip-unneeded $(find /usr/local/cuda-11.3 -type f -name "*.so*")
-    strip --strip-unneeded $(find  $MAMBA_ROOT_PREFIX -type f -name "*.so*" ! -name "libncurses*.so" ! -name "libgcc_s.so")
-) 
+    strip --strip-unneeded $(find  $MAMBA_ROOT_PREFIX -type f -name "*.so*" ! -name "libncurses*.so" ! -name "libgcc_s.so") 
     apt-get clean -y
     dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
     df -h . /tmp
