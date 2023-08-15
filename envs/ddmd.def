@@ -18,6 +18,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     mkdir -p $TMPDIR
 
     MYPREFIX=/opt/conda
+    MAMBA_ROOT_PREFIX=/opt/micromamba
     mkdir -p $MYPREFIX
     df -h /tmp /dev/shm $MYPREFIX
     MINIFORGE3=Miniforge3-Linux-x86_64.sh
@@ -36,6 +37,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     pip install git+https://github.com/hengma1001/ddmd.git
 # cleanup    
     conda clean -y --force-pkgs-dirs
+    micromamba clean -y --force-pkgs-dirs
     du -sh $MYPREFIX/*
     apt-get purge -y --allow-change-held-packages libcublas-dev-11-3 libcufft-dev-11-3 libcusparse-dev-11-3 libcusolver-dev-11-3 libnpp-dev-11-3 libnccl-dev  libcurand-dev-11-3  cuda-cudart-dev-11-3 cuda-nvrtc-dev-11-3 libnvjpeg-dev-11-3 libcudnn8-dev cuda-sanitizer-11-3 cuda-nvdisasm-11-3
     apt-get clean
@@ -44,6 +46,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     ls -lrt /usr/local
     rm -f /usr/local/cuda-11.3/targets/x86_64-linux/lib/lib*.a
     rm -rf $MYPREFIX/lib/python*/site-packages/tensorflow/include
+    rm -rf $MAMBA_ROOT_PREFIX/envs/ddmd/lib/python*/site-packages/tensorflow/include
     strip --strip-unneeded /usr/local/cuda-11.3/targets/x86_64-linux/lib/*.so.*.*
     apt-get clean -y
     dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
@@ -53,6 +56,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
 %environment
 #    PATH="/opt/conda/bin:$PATH"
     MYPREFIX=/opt/conda
+    MAMBA_ROOT_PREFIX=/opt/micromamba
     eval "$($MYPREFIX/bin/conda shell.dash hook)"
     eval "$(micromamba shell hook --shell dash)"
     micromamba activate ddmd
