@@ -28,7 +28,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
 
     export PATH="$MYPREFIX/bin:$PATH"
     conda update -qy conda
-    conda env update -q -n base -f /ddmd.yml || true
+    conda env update -y -n base -f /ddmd.yml || true
     df -h
     pip install git+https://github.com/hengma1001/ddmd.git
 # cleanup    
