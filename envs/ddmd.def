@@ -14,24 +14,18 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     apt-get -y update
     apt-get install -y build-essential  cmake  git  wget openmpi-bin  libopenmpi-dev slurm-client
     apt-get clean
-    wget -q -P /tmp https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+    wget -q -P /tmp https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
     MYPREFIX=/opt/conda
-    bash /tmp/Miniforge3-Linux-x86_64.sh -b -p $MYPREFIX
+    bash /tmp/Mambaforge-Linux-x86_64.sh -b -p $MYPREFIX
+  export PATH="$MYPREFIX/bin:$PATH"
+    mamba update -c conda-forge -qy conda
+    mamba env update -c conda-forge -q -n base -f /ddmd.yml || true
 
-  eval "$($MYPREFIX/bin/conda shell.dash hook)"
-    conda install -y -c conda-forge micromamba
-  eval "$(micromamba shell hook --shell dash)"
-    micromamba update -y
-    micromamba create -y -n ddmd -f ./ddmd.yml
-    micromamba activate ddmd 
    pip install git+https://github.com/hengma1001/ddmd.git
 
     unset DEBIAN_FRONTEND
 
 %environment
     MYPREFIX=/opt/conda
-#    PATH="$MYPREFIX/bin:$PATH"
-  eval "$($MYPREFIX/bin/conda shell.dash hook)"
-  eval "$(micromamba shell hook --shell dash)"
-    micromamba activate ddmd 
+    PATH="$MYPREFIX/bin:$PATH"
 
