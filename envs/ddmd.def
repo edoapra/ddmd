@@ -5,6 +5,8 @@ From: nvidia/cuda:11.3.1-cudnn8-runtime-ubuntu20.04
     ddmd.yml /ddmd.yml
 
 %post
+    echo "$(readlink /proc/$$/exe) is the shell in use"
+
     export DEBIAN_FRONTEND=noninteractive
     export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 
@@ -13,15 +15,23 @@ From: nvidia/cuda:11.3.1-cudnn8-runtime-ubuntu20.04
     apt-get install -y build-essential  cmake  git  wget openmpi-bin openmpi-doc libopenmpi-dev slurm-client
 
     wget -q -P /tmp https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
-    bash /tmp/Miniforge3-Linux-x86_64.sh -b -p /opt/conda
+    MYPREFIX=/opt/conda
+    bash /tmp/Miniforge3-Linux-x86_64.sh -b -p $MYPREFIX
 
-    export PATH="/opt/conda/bin:$PATH"
-    conda update -qy conda
-    conda env update -n base -f /ddmd.yml
-    pip install git+https://github.com/hengma1001/ddmd.git
+  eval "$($MYPREFIX/bin/conda shell.dash hook)"
+    conda install -y -c conda-forge micromamba
+  eval "$(micromamba shell hook --shell dash)"
+    micromamba update -y
+    micromamba create -y -n ddmd -f ./ddmd.yml
+    micromamba activate ddmd 
+   pip install git+https://github.com/hengma1001/ddmd.git
 
     unset DEBIAN_FRONTEND
 
 %environment
-    PATH="/opt/conda/bin:$PATH"
+    MYPREFIX=/opt/conda
+#    PATH="$MYPREFIX/bin:$PATH"
+  eval "$($MYPREFIX/bin/conda shell.dash hook)"
+  eval "$(micromamba shell hook --shell dash)"
+    micromamba activate ddmd 
 
