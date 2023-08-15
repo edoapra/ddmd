@@ -49,6 +49,8 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     rm -rf $MYPREFIX/lib/python*/site-packages/tensorflow/include
     rm -rf $MAMBA_ROOT_PREFIX/envs/ddmd/lib/python*/site-packages/tensorflow/include
     strip --strip-unneeded /usr/local/cuda-11.3/targets/x86_64-linux/lib/*.so.*.*
+    strip --strip-unneeded $MAMBA_ROOT_PREFIX/envs/ddmd/lib/*.so.*.*
+    strip --strip-unneeded $MAMBA_ROOT_PREFIX/envs/ddmd/lib/python*/site-packages/tensorflow/python/*.so*
     apt-get clean -y
     dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
     df -h . /tmp
