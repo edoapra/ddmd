@@ -21,7 +21,7 @@ jobs:
     steps:
     - name: tag
       run: |
-        if [[ ${{ github.ref_name }} == tahoma-changes ]]; then
+        if [[ ${{ github.ref_name }} == miniforge ]]; then
         echo "tag=oras://ghcr.io/${{ github.repository }}/ddmd" >> $GITHUB_ENV
         else
         echo "tag=oras://ghcr.io/${{ github.repository }}/ddmd_${{ github.ref_name }}" >> $GITHUB_ENV
