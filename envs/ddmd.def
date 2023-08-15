@@ -11,7 +11,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
 
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 A4B469963BF863CC
     apt-get -y update
-    apt-get install -y build-essential  cmake  git  wget openmpi-bin openmpi-doc libopenmpi-dev slurm-client
+    apt-get install -y build-essential  cmake  git  wget openmpi-bin  libopenmpi-dev slurm-client
 
     TMPDIR=/dev/shm/tmp
     mkdir -p $TMPDIR
@@ -34,7 +34,10 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
       micromamba update -c conda-forge -y -r $MAMBA_ROOT_PREFIX  -f /ddmd.yml
       micromamba activate $MAMBA_ROOT_PREFIX/envs/ddmd
     df -h
-    pip install git+https://github.com/hengma1001/ddmd.git
+    cd /opt
+    python -m venv venv
+    source venv/bin/activate
+    python -m pip install git+https://github.com/hengma1001/ddmd.git
 # cleanup    
     conda clean -y --force-pkgs-dirs
     micromamba clean -y --force-pkgs-dirs
@@ -67,5 +70,6 @@ rm -rf /usr/share/doc
     eval "$($MYPREFIX/bin/conda shell.dash hook)"
     eval "$(micromamba shell hook --shell dash)"
     micromamba activate $MAMBA_ROOT_PREFIX/envs/ddmd
+    source /opt/venv/bin/activate
     
 
