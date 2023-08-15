@@ -20,7 +20,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     MYPREFIX=/opt/conda
     mkdir -p $MYPREFIX
     df -h /tmp /dev/shm $MYPREFIX
-    MINIFORGE3=Miniforge3-latest-Linux-x86_64.sh
+    MINIFORGE3=Miniforge3-Linux-x86_64.sh
     wget -q -P /tmp  https://github.com/conda-forge/miniforge/releases/latest/download/$MINIFORGE3
     bash /tmp/$MINIFORGE3 -b -u -p $MYPREFIX
     rm -f /tmp/$MINIFORGE3
