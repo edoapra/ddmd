@@ -19,7 +19,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     bash /tmp/Mambaforge-Linux-x86_64.sh -b -p $MYPREFIX
   export PATH="$MYPREFIX/bin:$PATH"
     mamba update -c conda-forge -qy conda
-    mamba env update -c conda-forge -q -n base -f /ddmd.yml || true
+    mamba env update  -q -n base -f /ddmd.yml 
 
    pip install git+https://github.com/hengma1001/ddmd.git
 
