@@ -36,7 +36,7 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     df -h
     cd /opt
     python -m venv venv
-    source venv/bin/activate
+    . venv/bin/activate
     python -m pip install git+https://github.com/hengma1001/ddmd.git
 # cleanup    
     conda clean -y --force-pkgs-dirs
@@ -70,6 +70,6 @@ rm -rf /usr/share/doc
     eval "$($MYPREFIX/bin/conda shell.dash hook)"
     eval "$(micromamba shell hook --shell dash)"
     micromamba activate $MAMBA_ROOT_PREFIX/envs/ddmd
-    source /opt/venv/bin/activate
+    . /opt/venv/bin/activate
     
 
