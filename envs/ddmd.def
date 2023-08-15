@@ -1,6 +1,5 @@
 Bootstrap: docker
 #From: nvidia/cuda:11.3.0-cudnn8-base-ubuntu20.04
-#From: nvidia/cuda:11.3.0-runtime-ubuntu20.04
 From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
 
 %files
@@ -40,6 +39,12 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     conda clean -y --force-pkgs-dirs
     micromamba clean -y --force-pkgs-dirs
     du -sh $MYPREFIX/*
+DEBIAN_FRONTEND=noninteractive apt-get -q=2 -y install localepurge 
+echo MANDELETE >  /etc/locale.nopurge 
+echo DONTBOTHERNEWLOCALE >> /etc/locale.nopurge 
+echo en_US.UTF-8 >> /etc/locale.nopurge 
+localepurge 
+rm -rf /usr/share/doc 
     apt-get purge -y --allow-change-held-packages libcublas-dev-11-3 libcufft-dev-11-3 libcusparse-dev-11-3 libcusolver-dev-11-3 libnpp-dev-11-3 libnccl-dev  libcurand-dev-11-3  cuda-cudart-dev-11-3 cuda-nvrtc-dev-11-3 libnvjpeg-dev-11-3 libcudnn8-dev cuda-sanitizer-11-3 cuda-nvdisasm-11-3
     apt-get clean
     apt-get autoremove -y
@@ -48,8 +53,8 @@ From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
     rm -f /usr/local/cuda-11.3/targets/x86_64-linux/lib/lib*.a
     rm -rf $MYPREFIX/lib/python*/site-packages/tensorflow/include
     rm -rf $MAMBA_ROOT_PREFIX/envs/ddmd/lib/python*/site-packages/tensorflow/include
-    strip --strip-unneeded $(find /usr/local/cuda-11.3 -name*.so*)
-    strip --strip-unneeded $(find  $MAMBA_ROOT_PREFIX -name *.so*)
+    strip --strip-unneeded $(find /usr/local/cuda-11.3 -name "*.so*")
+    strip --strip-unneeded $(find  $MAMBA_ROOT_PREFIX -name "*.so*")
     apt-get clean -y
     dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
     df -h . /tmp
