@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: nvidia/cuda:11.3.1-cudnn8-runtime-ubuntu20.04
+From: nvidia/cuda:11.3.1-runtime-ubuntu20.04
 
 %files
     ddmd.yml /ddmd.yml
@@ -12,8 +12,8 @@ From: nvidia/cuda:11.3.1-cudnn8-runtime-ubuntu20.04
 
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 A4B469963BF863CC
     apt-get -y update
-    apt-get install -y build-essential  cmake  git  wget openmpi-bin openmpi-doc libopenmpi-dev slurm-client
-
+    apt-get install -y build-essential  cmake  git  wget openmpi-bin  libopenmpi-dev slurm-client
+    apt-get clean
     wget -q -P /tmp https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
     MYPREFIX=/opt/conda
     bash /tmp/Miniforge3-Linux-x86_64.sh -b -p $MYPREFIX
