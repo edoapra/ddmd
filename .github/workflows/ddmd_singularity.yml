@@ -62,7 +62,6 @@ jobs:
         ls -lrth /tmp/ddmd.sif
         file /tmp/ddmd.sif
     - name: Check compilation result
-      if: ${{ failure() }}
       run: |
         df -h
         du -sk .apptainer
