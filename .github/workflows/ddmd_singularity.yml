@@ -57,10 +57,17 @@ jobs:
         cd envs
         df -h . /tmp /mnt
         ls -lrt ~/
-        sudo apptainer build  /tmp/ddmd.sif  ddmd.def
+        apptainer build --fakeroot /tmp/ddmd.sif  ddmd.def
         sudo chown  $USER /tmp/ddmd.sif
         ls -lrth /tmp/ddmd.sif
         file /tmp/ddmd.sif
+    - name: Check compilation result
+      if: ${{ failure() }}
+      run: |
+        df -h
+        du -sk .apptainer
+        pwd
+        df -h .
     - name: builddate
       id: build-date
       run: |
