@@ -57,16 +57,18 @@ jobs:
         cd envs
         df -h . /tmp /mnt
         ls -lrt ~/
-        apptainer build --fakeroot /tmp/ddmd.sif  ddmd.def
-        sudo chown  $USER /tmp/ddmd.sif
-        ls -lrth /tmp/ddmd.sif
-        file /tmp/ddmd.sif
+        apptainer build --fakeroot /dev/shm/ddmd.sif  ddmd.def
+        sudo chown  $USER /dev/shm/ddmd.sif
+        ls -lrth /dev/shm/ddmd.sif
+        file /dev/shm/ddmd.sif
     - name: Check compilation result
       run: |
         df -h
-        du -sk .apptainer
         pwd
+        df -h /home/runner || true
+        du -sk .apptainer  || true
         df -h .
+        du -sk /tmp/* |sort -n || true
     - name: builddate
       id: build-date
       run: |
@@ -78,12 +80,12 @@ jobs:
         pwd
         ls -l
         apptainer remote list
-        apptainer push /tmp/ddmd.sif ${{ env.tag }}:${{ env.date }}
-        apptainer push /tmp/ddmd.sif ${{ env.tag }}:latest
+        apptainer push /dev/shm/ddmd.sif ${{ env.tag }}:${{ env.date }}
+        apptainer push /dev/shm/ddmd.sif ${{ env.tag }}:latest
     - name: test image with apptainer
       run: |
-        rm -f /tmp/ddmd.sif || true
-        apptainer pull  -F /tmp/ddmd.sif ${{ env.tag }}:${{ env.date }}
+        rm -f /dev/shm/ddmd.sif || true
+        apptainer pull  -F /dev/shm/ddmd.sif ${{ env.tag }}:${{ env.date }}
         apptainer exec ${{ env.tag }}:${{ env.date }} ddmd run_ddmd  -h 
         apptainer exec ${{ env.tag }}:${{ env.date }} ls -lrt /opt/conda/bin |tail || true
         apptainer cache list -v

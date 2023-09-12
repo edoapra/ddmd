@@ -5,59 +5,56 @@ From: nvidia/cuda:11.7.1-runtime-ubuntu22.04
     ddmd.yml /ddmd.yml
 
 %post
-    export DEBIAN_FRONTEND=noninteractive
-    export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
-    CUDA_VER=11.7
-    CUDA_VS=$(echo $CUDA_VER | sed  's/\./\-/')
-    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 A4B469963BF863CC
-    apt-get -y update
-    apt-get install -y make gcc g++  git  wget 
-#    TMPDIR=/dev/shm/tmp
-#    mkdir -p $TMPDIR
-    export MYPREFIX=/opt/conda
-    mkdir -p $MYPREFIX
-    df -h /tmp /dev/shm $MYPREFIX
-    MINIFORGE3=Miniforge3-Linux-x86_64.sh
-    wget -q -P /tmp  https://github.com/conda-forge/miniforge/releases/latest/download/$MINIFORGE3
-    bash /tmp/$MINIFORGE3 -b -u -p $MYPREFIX
-    rm -f /tmp/$MINIFORGE3
-
-    export PATH="$MYPREFIX/bin:$PATH"
-    eval "$($MYPREFIX/bin/conda shell.dash hook)"
-      conda update -n base -c conda-forge conda 
-      conda install -y -c conda-forge micromamba
-    export MAMBA_ROOT_PREFIX=/opt/micromamba
-      eval "$(micromamba shell hook --shell dash)"
-    export MAMBA_ROOT_PREFIX=/opt/micromamba
-      micromamba create -c conda-forge -y -n ddmd -r $MAMBA_ROOT_PREFIX -f /ddmd.yml
-      micromamba update -c conda-forge -y -r $MAMBA_ROOT_PREFIX  -f /ddmd.yml
-      micromamba activate $MAMBA_ROOT_PREFIX/envs/ddmd
-    df -h
-    python -m pip install git+https://github.com/hengma1001/ddmd.git
-    conda clean -y --force-pkgs-dirs
-    micromamba clean -y --force-pkgs-dirs
-    du -sh $MYPREFIX/*
-DEBIAN_FRONTEND=noninteractive apt-get -q=2 -y install localepurge 
-echo MANDELETE >  /etc/locale.nopurge 
-echo DONTBOTHERNEWLOCALE >> /etc/locale.nopurge 
-echo en_US.UTF-8 >> /etc/locale.nopurge 
-localepurge 
-rm -rf /usr/share/doc 
-    apt-get purge -y --allow-change-held-packages libcublas-dev-${CUDA_VS} libcufft-dev-${CUDA_VS} libcusparse-dev-${CUDA_VS} libcusolver-dev-${CUDA_VS} libnpp-dev-${CUDA_VS} libnccl-dev  libcurand-dev-${CUDA_VS}  cuda-cudart-dev-${CUDA_VS} cuda-nvrtc-dev-${CUDA_VS} libnvjpeg-dev-${CUDA_VS} libcudnn8-dev cuda-sanitizer-${CUDA_VS} cuda-nvdisasm-${CUDA_VS}
-    apt-get clean
-    apt-get autoremove -y
-    df -h
-    ls -lrt /usr/local
-    rm -f /usr/local/cuda-${CUDA_VER}/targets/x86_64-linux/lib/lib*.a
-    rm -rf $MYPREFIX/lib/python*/site-packages/tensorflow/include
-    rm -rf $MAMBA_ROOT_PREFIX/envs/ddmd/lib/python*/site-packages/tensorflow/include
-    strip --strip-unneeded $(find /usr/local/cuda-${CUDA_VER} -type f -name "*.so*")
-    strip --strip-unneeded $(find  $MAMBA_ROOT_PREFIX -type f -name "*.so*" ! -name "libncurses*.so" ! -name "libgcc_s.so") 
-    apt-get clean -y
-    rm -rf /var/cache
-    rm -f /opt/micromamba/envs/ddmd/lib/libcus*
-    dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
-    df -h 
+    export DEBIAN_FRONTEND=noninteractive && \
+    export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 && \
+    CUDA_VER=11.7 && \
+    CUDA_VS=$(echo $CUDA_VER | sed  's/\./\-/') && \
+    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 A4B469963BF863CC && \
+    apt-get -y update && \
+    apt-get install -y make gcc g++  git  wget  && \
+    export MYPREFIX=/opt/conda && \
+    mkdir -p $MYPREFIX && \
+    df -h /tmp /dev/shm $MYPREFIX && \
+    MINIFORGE3=Miniforge3-Linux-x86_64.sh && \
+    wget -q -P /tmp  https://github.com/conda-forge/miniforge/releases/latest/download/$MINIFORGE3 && \
+    bash /tmp/$MINIFORGE3 -b -u -p $MYPREFIX && \
+    rm -f /tmp/$MINIFORGE3 && \
+    export PATH="$MYPREFIX/bin:$PATH" && \
+    eval "$($MYPREFIX/bin/conda shell.dash hook)" && \
+      conda update -n base -c conda-forge conda  && \
+      conda install -y -c conda-forge micromamba && \
+    export MAMBA_ROOT_PREFIX=/opt/micromamba && \
+      eval "$(micromamba shell hook --shell dash)" && \
+    export MAMBA_ROOT_PREFIX=/opt/micromamba && \
+      micromamba create -c conda-forge -y -n ddmd -r $MAMBA_ROOT_PREFIX -f /ddmd.yml && \
+      micromamba update -c conda-forge -y -r $MAMBA_ROOT_PREFIX  -f /ddmd.yml && \
+      micromamba activate $MAMBA_ROOT_PREFIX/envs/ddmd && \
+    df -h && \
+    python -m pip install git+https://github.com/hengma1001/ddmd.git && \
+    conda clean -y --force-pkgs-dirs && \
+    micromamba clean -y --force-pkgs-dirs && \
+    du -sh $MYPREFIX/* && \
+DEBIAN_FRONTEND=noninteractive apt-get -q=2 -y install localepurge  && \
+echo MANDELETE >  /etc/locale.nopurge  && \
+echo DONTBOTHERNEWLOCALE >> /etc/locale.nopurge  && \
+echo en_US.UTF-8 >> /etc/locale.nopurge  && \
+localepurge  && \
+rm -rf /usr/share/doc  && \
+    apt-get purge -y --allow-change-held-packages libcublas-dev-${CUDA_VS} libcufft-dev-${CUDA_VS} libcusparse-dev-${CUDA_VS} libcusolver-dev-${CUDA_VS} libnpp-dev-${CUDA_VS} libnccl-dev  libcurand-dev-${CUDA_VS}  cuda-cudart-dev-${CUDA_VS} cuda-nvrtc-dev-${CUDA_VS} libnvjpeg-dev-${CUDA_VS} libcudnn8-dev cuda-sanitizer-${CUDA_VS} cuda-nvdisasm-${CUDA_VS} && \
+    apt-get clean && \
+    apt-get autoremove -y && \
+    df -h && \
+    ls -lrt /usr/local && \
+    rm -f /usr/local/cuda-${CUDA_VER}/targets/x86_64-linux/lib/lib*.a && \
+    rm -rf $MYPREFIX/lib/python*/site-packages/tensorflow/include && \
+    rm -rf $MAMBA_ROOT_PREFIX/envs/ddmd/lib/python*/site-packages/tensorflow/include && \
+    strip --strip-unneeded $(find /usr/local/cuda-${CUDA_VER} -type f -name "*.so*") && \
+    strip --strip-unneeded $(find  $MAMBA_ROOT_PREFIX -type f -name "*.so*" ! -name "libncurses*.so" ! -name "libgcc_s.so")  && \
+    apt-get clean -y && \
+    rm -rf /var/cache && \
+    rm -f /opt/micromamba/envs/ddmd/lib/libcus* && \
+    dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n && \
+    df -h  && \
     unset DEBIAN_FRONTEND
 
 %environment
