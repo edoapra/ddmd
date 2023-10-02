@@ -21,7 +21,7 @@ jobs:
     steps:
     - name: pkg cleanup
       run: |
-        apt-get purge -y google-cloud-cli azure-cli microsoft-edge-stable dotnet-sdk-7.0 dotnet-sdk-6.0 google-chrome-stable firefox
+        sudo apt-get purge -y google-cloud-cli azure-cli microsoft-edge-stable dotnet-sdk-7.0 dotnet-sdk-6.0 google-chrome-stable firefox
     - name: tag
       run: |
         if [[ ${{ github.ref_name }} == miniforge ]]; then
